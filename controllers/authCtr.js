@@ -7,13 +7,13 @@ const register = async (req, res) => {
     const { username, email, password } = req.body;
   
     if (!username || !email || !password) {
-      throw new BadRequestError("Please Provide All fields");
+      console.log("Please Provide All fields");
     }
   
     const isUserExists = await User.findOne({ email: email });
   
     if (isUserExists) {
-      throw new BadRequestError("User Already Exists");
+        console.log("User Already Exists");
     }
   
     //hashing password
@@ -33,7 +33,7 @@ const register = async (req, res) => {
     const { username, email, password } = req.body;
   
     if ((!username && !email) || !password) {
-      throw new BadRequestError("Please Provide All the fields");
+        console.log("Please Provide All the fields");
     }
   
     const isUser = await User.findOne({
@@ -41,16 +41,14 @@ const register = async (req, res) => {
     });
   
     if (!isUser) {
-      throw new NotFoundError("Invalid Credentials");
+        console.log("Invalid Credentials");
     }
   
     //compare password
     const comparePassword = await bcrypt.compare(password, isUser.password);
   
     if (!comparePassword) {
-      throw new BadRequestError(
-        "Please Make Sure You have entered Correct Password!"
-      );
+        console.log("Please Make Sure You have entered Correct Password!");
     }
 
     res.status(StatusCodes.OK).json({message:"login success"});
