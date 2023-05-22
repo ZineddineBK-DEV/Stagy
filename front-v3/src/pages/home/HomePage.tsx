@@ -1,16 +1,16 @@
-import { Button, Container, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Container, Divider, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
 import { getJobsList, saveJob } from "./HomeService";
 import { useEffect, useState } from "react";
 import { IJob } from "../../models/IJob";
 import SendIcon from '@mui/icons-material/Send';
-import BookmarkIcon  from '@mui/icons-material/Bookmark';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import { format, parseISO } from "date-fns";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 const HomePage: React.FC = () => {
   const [jobs, setJobs] = useState<IJob[]>([]);
- 
+  const [search,setSearch] = useState("")
 
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
         setJobs(response);
         // jobs.forEach(job => {
         //  setJobID(job._id)
-        //  console.log(job._id)
+          console.log(search)
         // });
       },
       (error) => {
@@ -32,21 +32,39 @@ const HomePage: React.FC = () => {
     );
   }, []);
 
-  const handleClickSave= async (id: string) => {
-    const job = await axios.patch("http://localhost:5000/api/v1/job/saveJob/"+id);
+  const handleClickSave = async (id: string) => {
+    const job = await axios.patch("http://localhost:5000/api/v1/job/saveJob/" + id);
     toast("Job saved Successfuly");
     window.location.reload();
     return job.data;
   }
-  const handleClickUnsave= async (id: string) => {
-    const job = await axios.patch("http://localhost:5000/api/v1/job/unsaveJob/"+id);
+  const handleClickUnsave = async (id: string) => {
+    const job = await axios.patch("http://localhost:5000/api/v1/job/unsaveJob/" + id);
     toast("Job unsaved Successfuly")
     window.location.reload();
+    return job.data;
+  }
+  const handleSearch =async () => {
+    const job = await axios.post("http://localhost:5000/api/v1/jobs/searchJobs",search);
     return job.data;
   }
 
   return (
     <Container >
+      <Box>
+        <Typography variant="h4" paddingBottom={"10px"} color={"#27374D"}>Offers list ({jobs.length})</Typography>
+        <Divider />
+      </Box>
+      <Box>
+        <Grid container spacing={2}>
+        <TextField
+        label="Search"
+        value={search}
+        onChange={handleSearch}
+        variant="outlined"
+      />
+        </Grid>
+      </Box>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -59,11 +77,14 @@ const HomePage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
+      <Divider style={{
+        marginTop:"20px"
+      }} />
       {jobs.map((job: IJob, key) => (
         <Paper
           key={key}
           style={{
-            marginTop: "10px",
+            marginTop: "20px",
           }}
           sx={{
             p: 2,
@@ -116,11 +137,11 @@ const HomePage: React.FC = () => {
                     Apply
                   </Button>
                   {!job.saved ?
-                  <Button variant="outlined" onClick={handleClickSave.bind(null,job._id)} startIcon={<BookmarkIcon />}>
-                    Save
-                  </Button> : <Button variant="outlined" onClick={handleClickUnsave.bind(null,job._id)} startIcon={<BookmarkAddedIcon />}>
-                    Unsave
-                  </Button>
+                    <Button variant="outlined" onClick={handleClickSave.bind(null, job._id)} startIcon={<BookmarkIcon />}>
+                      Save
+                    </Button> : <Button variant="outlined" onClick={handleClickUnsave.bind(null, job._id)} startIcon={<BookmarkAddedIcon />}>
+                      Unsave
+                    </Button>
                   }
                 </Stack>
               </Grid>

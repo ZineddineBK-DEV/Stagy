@@ -1,13 +1,15 @@
-import { AppBar, Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Divider, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import sizeConfigs from "../../configs/sizeConfigs";
 import React from "react";
 import { Logout } from "@mui/icons-material";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import {logout} from "../../pages/auth/authService";
+import is from "date-fns/esm/locale/is/index.js";
 
 const Topbar = () => {
   let navigate: NavigateFunction = useNavigate();
-
+  let isCompany= localStorage.getItem('user')?.split(',')[3].split(':')[1].substring(1,8)
+  // console.log(isCompany?.split(',')[3].split(':')[1].substring(1,8))
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,6 +24,9 @@ const Topbar = () => {
   };
   const GoToProfile =() =>{
     navigate("/profile", {replace:true})
+  }
+  const handleRedirect=() =>{
+    navigate("/postJob", {replace:true})
   }
   return (
     <AppBar
@@ -49,6 +54,14 @@ const Topbar = () => {
             marginTop : '-50px',
             marginBottom: '10px'
         }}>
+        <Box>
+         {isCompany == "Company" ?  
+        <Button variant="outlined" style={{color: "whitesmoke",borderRadius:"10px",border: "1px solid whitesmoke",}}onClick={handleRedirect}>
+          Post a job
+        </Button>
+        : <></>}
+        </Box>
+        
       <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}

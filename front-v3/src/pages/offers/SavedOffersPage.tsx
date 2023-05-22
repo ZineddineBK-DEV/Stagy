@@ -5,6 +5,8 @@ import { IJob } from "../../models/IJob";
 import SendIcon from '@mui/icons-material/Send';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { format, parseISO } from "date-fns";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 
 const SavedOffersPage: React.FC = () => {
@@ -13,7 +15,6 @@ const SavedOffersPage: React.FC = () => {
     getSavedJobs().then(
       (response) => {
         setSavedJobs(response);
-        console.log(response)
       },
 
       (error) => {
@@ -25,13 +26,18 @@ const SavedOffersPage: React.FC = () => {
       }
     );
   }, []);
-
+  const handleClickUnsave= async (id: string) => {
+    const job = await axios.patch("http://localhost:5000/api/v1/job/unsaveJob/"+id);
+    toast("Job unsaved Successfuly")
+    window.location.reload();
+    return job.data;
+  }
   
   
 
   return (
     <Container >
-      {savedjobs ?
+      {savedjobs.length>0 ?
       savedjobs.map((job: IJob, key) => (
         <Paper
           key={key}
@@ -88,8 +94,8 @@ const SavedOffersPage: React.FC = () => {
                   >
                     Apply
                   </Button>
-                  <Button variant="outlined" startIcon={<BookmarkIcon />}>
-                    Save
+                  <Button variant="outlined" onClick={handleClickUnsave.bind(null,job._id)} startIcon={<BookmarkIcon />}>
+                    Unsave
                   </Button>
                 </Stack>
               </Grid>

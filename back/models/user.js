@@ -23,8 +23,7 @@ const userSchema = new mongoose.Schema({
   userType:{
     type: String,
     required: [true,"Please Provide the account nature"],
-
-  }
+  },
  
 });
 

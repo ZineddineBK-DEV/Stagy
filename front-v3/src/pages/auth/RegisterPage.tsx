@@ -95,6 +95,7 @@ const RegisterPage: React.FC<Props> = () =>{
                   <Field name="email" type="email" className="form-control" />
                   <ErrorMessage
                     name="email"
+                    
                     component="div"
                     className="alert alert-danger"
                   />

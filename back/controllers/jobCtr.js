@@ -6,7 +6,7 @@ const { ObjectId } = require("mongodb");
 module.exports.postJob = async (req,res) =>{
     const body = {...req.body};
     try {
-        const job = await Job.create(body)
+        const job = (await Job.create(body)).populate('company')
         res.status(StatusCodes.CREATED).json(job)
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
@@ -48,15 +48,7 @@ module.exports.getAllJobs = async (req,res) =>{
         }
 }
 
-module.exports.getSavedJobs= async (req,res) => {
-    try {
-        const jobs = await Job.find({ saved : true });
-        res.status(StatusCodes.OK).json(jobs);
-        }
-    catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
-        }
-}
+
 module.exports.SaveJob= async (req,res) => {
     const ID = req.params.id;
     if (!ObjectId.isValid(ID)) {
@@ -83,3 +75,13 @@ module.exports.UnsaveJob= async (req,res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
         }
 }
+
+// module.exports.search = async (req,res) =>{
+//     const title = req.body.title;
+//     try {
+//         const result = Job.find({title})
+//         res.status(StatusCodes.OK).json(result);
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).json(error)
+//     }
+// }

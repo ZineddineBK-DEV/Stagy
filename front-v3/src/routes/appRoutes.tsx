@@ -14,9 +14,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditProfilePage from "../pages/profile/EditProfilePage";
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/auth/RegisterPage";
+import PostJob from "../pages/home/PostJob";
 
 const appRoutes: RouteType[] = [
-  
+
   {
     index: true,
     element: <HomePage />,
@@ -108,6 +109,11 @@ const appRoutes: RouteType[] = [
           },
         ]
     
+   },
+   {
+    path: "/postJob",
+    element: <PostJob />,
+    state: "post.Job",
    }
 ];
 

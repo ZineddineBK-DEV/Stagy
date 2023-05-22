@@ -9,7 +9,7 @@ const authRoute =require ("./routes/authRoutes.js");
 const companyRoutes =require ("./routes/companyRoutes.js"); 
 const studentRoutes =require ("./routes/studentRoutes.js"); 
 const jobRoutes =require ("./routes/jobRoutes.js"); 
-
+const savedJobs = require("./routes/savedJobs.js")
 
 
 const app = express();
@@ -25,6 +25,8 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/student",studentRoutes);
 app.use("/api/v1/company", companyRoutes);
 app.use("/api/v1/job", jobRoutes);
+app.use("/api/v1/jobs", savedJobs);
+
 
 
 const port = 5000;

@@ -87,5 +87,5 @@ module.exports.login = async (req, res) => {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Please Make Sure You have entered Correct Password!");
   }
 
-  res.status(StatusCodes.CREATED).json({ message: "login success", isUser});
+  res.status(StatusCodes.CREATED).json(isUser);
 };
